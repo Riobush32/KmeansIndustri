@@ -16,7 +16,7 @@
     <button class="btn btn-secondary">Button</button>
     <button class="btn btn-accent">Button</button>
     <button class="btn btn-ghost">Button</button>
-    <button class="btn btn-link">Button</button>
+    <a href="{{ route('kmeans.index') }}" class="btn btn-link">Data</a>
 </body>
 
 </html>

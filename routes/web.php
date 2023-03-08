@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KmeansController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/kmeans', [KmeansController::class, 'index'])->name('kmeans.index');
+Route::post('import', [KmeansController::class, 'store'])->name('industri.store');
