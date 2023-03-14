@@ -13,18 +13,7 @@ class IndustriImport implements ToModel, WithHeadingRow
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    // public function model(array $row)
-    // {
-    //     return new DataIndustri2016([
-    //         'kecamatan' => $row[0],
-    //         't2011'      => $row[1],
-    //         't2012'      => $row[2],
-    //         't2013'      => $row[3],
-    //         't2014'      => $row[4],
-    //         't2015'      => $row[5],
-    //         't2016'      => $row[6],
-    //     ]);
-    // }
+    
 
     public function model(array $row)
     {
