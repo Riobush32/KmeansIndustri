@@ -36,6 +36,8 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if (!empty($data))
+                            
                         <?php $no = 1; ?>
                         @foreach($data as $item)
                         <tr>
@@ -69,5 +71,5 @@
     </div>
     
         @include('proses')
-    
+    @endif
 </html>

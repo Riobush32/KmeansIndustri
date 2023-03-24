@@ -20,3 +20,4 @@ Route::get('/', function () {
 
 Route::get('/kmeans', [KmeansController::class, 'index'])->name('kmeans.index');
 Route::post('import', [KmeansController::class, 'store'])->name('industri.store');
+Route::post('/kmeans/data', [KmeansController::class, 'storeDataCluster'])->name('kmeans.dataCluster');

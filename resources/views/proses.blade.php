@@ -10,7 +10,7 @@
     
 </div>
 
-{{-- @if ($kvalue != 0) --}}
+@if ($kvalue != 0)
     
 
 
@@ -76,7 +76,7 @@
             ?>
             @foreach($data as $item)
             <tr>
-                <th>{{ $no }}</th>
+                    <th>{{ $no }}</th>
                 <th>{{ $item->kecamatan }}</th>
                     <?php 
                         $i = 0;
@@ -96,6 +96,7 @@
                             $k_nilai[] = $sum;
                             $i++;
                         ?>
+                        <input type="hidden" name="c{{ $i+1; }}">
                         <th>
                             {{ $sum }}
                         </th>
@@ -114,7 +115,8 @@
                         <th>
                             {{ $min_index+1 }}
                         </th>
-                        
+                        <button type="submit" id="sub" class="hidden"></button>
+                        </form>
             </tr>
             
 
@@ -139,8 +141,22 @@
             </tr>
         </tbody>
     </table>
-    {{-- {{ count($k_data) }} --}}
+    {{ $k_nilai[0] }}
 </div>
 
-
-{{-- @endif --}}
+<script>
+    $(document).ready(function() {
+    $('#my-form').on('submit', function(event) {
+    event.preventDefault();
+    
+    var formData = $(this).serialize();
+    
+    $.ajax({
+    url: '{{ route("kmeans.dataCluster") }}',
+    method: 'POST',
+    data: formData,
+    });
+    });
+    });
+</script>
+@endif
