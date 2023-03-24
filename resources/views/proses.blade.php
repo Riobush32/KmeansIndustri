@@ -74,52 +74,21 @@
                 $j = 0; 
                 $k_data = array();
             ?>
-            @foreach($data as $item)
+        
+
+            @foreach ($cluster as $item)
             <tr>
-                    <th>{{ $no }}</th>
+                <th>{{ $no }}</th>
                 <th>{{ $item->kecamatan }}</th>
-                    <?php 
-                        $i = 0;
-                        $k_nilai = array();
-                    ?>
+                @for ($i = 1; $i <= $kvalue; $i++)
+                    <?php $c = 'c'.$i; ?>
+                    <th>{{ $item->$c }}</th>
+                @endfor
+                <th>{{ $item->cluster }}</th>
+                <th>{{ $item->index }}</th>
 
-                    @foreach ($dataKv as $item2)
-                        <?php 
-                            $sum = sqrt(
-                                    pow(($item2->t2011)-($item->t2011), 2)+
-                                    pow(($item2->t2012)-($item->t2012), 2)+
-                                    pow(($item2->t2013)-($item->t2013), 2)+
-                                    pow(($item2->t2014)-($item->t2014), 2)+
-                                    pow(($item2->t2015)-($item->t2015), 2)+
-                                    pow(($item2->t2016)-($item->t2016), 2)
-                                );  
-                            $k_nilai[] = $sum;
-                            $i++;
-                        ?>
-                        <input type="hidden" name="c{{ $i+1; }}">
-                        <th>
-                            {{ $sum }}
-                        </th>
-                    @endforeach
-                        
-                        <?php
-                            $k_data[] = $k_nilai;
-                            $k_min = min($k_data[$j]); 
-                            $min_index = array_search($k_min, $k_data[$j]);
-                            $no++; 
-                            $j++;
-                        ?>
-                        <th>
-                            {{ $k_min }}
-                        </th>
-                        <th>
-                            {{ $min_index+1 }}
-                        </th>
-                        <button type="submit" id="sub" class="hidden"></button>
-                        </form>
+                <?php $no++; ?>
             </tr>
-            
-
             @endforeach
 
             <?php 
@@ -141,22 +110,7 @@
             </tr>
         </tbody>
     </table>
-    {{ $k_nilai[0] }}
+    {{-- {{ $k_nilai[0] }} --}}
 </div>
 
-<script>
-    $(document).ready(function() {
-    $('#my-form').on('submit', function(event) {
-    event.preventDefault();
-    
-    var formData = $(this).serialize();
-    
-    $.ajax({
-    url: '{{ route("kmeans.dataCluster") }}',
-    method: 'POST',
-    data: formData,
-    });
-    });
-    });
-</script>
 @endif

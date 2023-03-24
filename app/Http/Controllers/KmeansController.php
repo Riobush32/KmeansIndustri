@@ -108,47 +108,12 @@ class KmeansController extends Controller
             'data' => DataIndustri2016::all(),
             'kvalue' => $request->kvalue,
             'dataKv' => Kvalue::all(),
+            'cluster' => dataCluster::all(),
             ]);
         
     }
 
-    public function storeDataCluster(Request $request)
-    {
-        dataCluster::create([
-            'kecamatan' => $request->kecamatan,
-            'c1' => $request->c1,
-            'c2' => $request->c2,
-            'c3' => $request->c3,
-            'c4' => $request->c4,
-            'c5' => $request->c5,
-            'c6' => $request->c6,
-            'c7' => $request->c7,
-            'c8' => $request->c8,
-            'c9' => $request->c9,
-            'c10' => $request->c10,
-            'c11' => $request->c11,
-            'c12' => $request->c12,
-            'c13' => $request->c13,
-            'c14' => $request->c14,
-            'c15' => $request->c15,
-            'c16' => $request->c16,
-            'c17' => $request->c17,
-            'c18' => $request->c18,
-            'c19' => $request->c19,
-            'c20' => $request->c20,
-            'c21' => $request->c21,
-            'c22' => $request->c22,
-            'c23' => $request->c23,
-            'c24' => $request->c24,
-            'c25' => $request->c25,
-
-
-
-            
-        ]);
-
-        return back();
-    }
+    
 
     
 
