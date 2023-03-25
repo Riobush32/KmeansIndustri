@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 use App\Models\Kvalue;
 
+use App\Models\AvgCluster;
+use App\Models\dataCluster;
 use Illuminate\Http\Request;
 use App\Imports\IndustriImport;
 use App\Models\DataIndustri2016;
 use App\Http\Controllers\Controller;
-use App\Models\dataCluster;
-use Maatwebsite\Excel\Facades\Excel;
 
+use Maatwebsite\Excel\Facades\Excel;
 use function PHPUnit\Framework\isEmpty;
 
 class KmeansController extends Controller
 {
+    
     public function index(Request $request)
     {
         $random = DataIndustri2016::all();
@@ -25,6 +27,7 @@ class KmeansController extends Controller
 
             Kvalue::truncate();
             dataCluster::truncate();
+            AvgCluster::truncate();
             for ($i=0; $i<$request->kvalue; $i++) { 
                     Kvalue::create([
                     'kecamatan' => $random[$i]->kecamatan,
@@ -69,8 +72,60 @@ class KmeansController extends Controller
                     }
                 }
 
-                dataCluster::create([
-                    'kecamatan' => $item->kecamatan,
+                // Memasukkan data kedalam table data_clusters 
+
+                $kecamatan = $item->kecamatan;
+                $this->createCluster($k_nilai, $kecamatan, $k_min, $index);
+
+            }
+
+            // masukkan rata2 
+
+
+            AvgCluster::create([
+                'avg_c1' => dataCluster::avg('c1'),
+                'avg_c2' => dataCluster::avg('c2'),
+                'avg_c3' => dataCluster::avg('c3'),
+                'avg_c4' => dataCluster::avg('c4'),
+                'avg_c5' => dataCluster::avg('c5'),
+                'avg_c6' => dataCluster::avg('c6'),
+                'avg_c7' => dataCluster::avg('c7'),
+                'avg_c8' => dataCluster::avg('c8'),
+                'avg_c9' => dataCluster::avg('c9'),
+                'avg_c10' => dataCluster::avg('c10'),
+                'avg_c11' => dataCluster::avg('c11'),
+                'avg_c12' => dataCluster::avg('c12'),
+                'avg_c13' => dataCluster::avg('c13'),
+                'avg_c14' => dataCluster::avg('c14'),
+                'avg_c15' => dataCluster::avg('c15'),
+                'avg_c16' => dataCluster::avg('c16'),
+                'avg_c17' => dataCluster::avg('c17'),
+                'avg_c18' => dataCluster::avg('c18'),
+                'avg_c19' => dataCluster::avg('c19'),
+                'avg_c20' => dataCluster::avg('c20'),
+                'avg_c21' => dataCluster::avg('c21'),
+                'avg_c22' => dataCluster::avg('c22'),
+                'avg_c23' => dataCluster::avg('c23'),
+                'avg_c24' => dataCluster::avg('c24'),
+                'avg_c25' => dataCluster::avg('c25'),        
+            ]);
+            
+        }
+
+        return view('Kmeans',[
+            'data' => DataIndustri2016::all(),
+            'kvalue' => $request->kvalue,
+            'dataKv' => Kvalue::all(),
+            'cluster' => dataCluster::all(),
+            ]);
+        
+    }
+    
+    
+    public function createCluster($k_nilai, $kecamatan, $k_min, $index)
+    {
+        dataCluster::create([
+                    'kecamatan' => $kecamatan,
                     'c1' => $k_nilai[0],
                     'c2' => $k_nilai[1],
                     'c3' => $k_nilai[2],
@@ -100,17 +155,6 @@ class KmeansController extends Controller
                     'index' => $index+1,
 
                 ]);
-
-            }
-            
-        }
-        return view('Kmeans',[
-            'data' => DataIndustri2016::all(),
-            'kvalue' => $request->kvalue,
-            'dataKv' => Kvalue::all(),
-            'cluster' => dataCluster::all(),
-            ]);
-        
     }
 
     

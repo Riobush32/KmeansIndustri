@@ -71,8 +71,6 @@
         <tbody>
             <?php 
                 $no = 1;
-                $j = 0; 
-                $k_data = array();
             ?>
         
 
@@ -91,26 +89,9 @@
             </tr>
             @endforeach
 
-            <?php 
-                $i = 0;
-                $k_total = 0;
-                $panjang_data = count($k_data);
-            ?>
-
-            {{-- @while ($i < 2)
-                <?php 
-                    $k_total += $k_data[$i][0];
-                ?>
-            <tr>
-                <th>Total : {{ $k_total }}</th>
-            </tr>
-            @endwhile  --}}
-            <tr>
-                <th>Rata-Rata</th>
-            </tr>
+            
         </tbody>
     </table>
-    {{-- {{ $k_nilai[0] }} --}}
 </div>
 
 @endif
