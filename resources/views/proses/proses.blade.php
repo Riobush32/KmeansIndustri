@@ -3,7 +3,7 @@
         <div class="input-group">
             <input type="number" min="1" max="25"placeholder="Masukkan Nilai K..." class="input input-bordered" value="{{ request('kvalue') }}" name="kvalue"/>
             <button class="btn" type="submit">
-                Jumlah K
+                Jumlah Kluster
             </button>
         </div>
     </form>
@@ -15,6 +15,7 @@
 
 
 <div class="card w-[98%] bg-base-100 shadow-xl mx-auto mt-5 border-2 p-5 my-5">
+    <h1 class="font-bold">Centoroid Awal</h1>
     <div class="overflow-x-auto">
         <table class="table w-full">
             <!-- head -->
@@ -77,7 +78,7 @@
             @foreach ($cluster as $item)
             <tr>
                 <th>{{ $no }}</th>
-                <th>{{ $item->kecamatan }}</th>
+                <th>{{ $item->data_industri2016s->kecamatan }}</th>
                 @for ($i = 1; $i <= $kvalue; $i++)
                     <?php $c = 'c'.$i; ?>
                     <th>{{ $item->$c }}</th>
@@ -99,6 +100,7 @@
     <table class="table w-full">
         <thead>
             <tr>
+                <th>No</th>
                 <?php $no = 1; ?>
                 @while ($no <= $kvalue) 
                     <th>C{{ $no }}</th>
@@ -107,14 +109,19 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+                {{-- <?php $no=1; ?>
                 @foreach ($avg as $item)
+                
+                <tr>
+                    <th>{{ $no }}</th>
                     @for ($i = 1; $i <= $kvalue; $i++) 
                         <?php $c='avg_c'.$i; ?>
                         <th>{{ $item->$c }}</th>
                     @endfor
-                @endforeach
-            </tr>
+                </tr>
+                <?php $no++ ?>
+                @endforeach --}}
+            
         </tbody>
     </table>
 </div>

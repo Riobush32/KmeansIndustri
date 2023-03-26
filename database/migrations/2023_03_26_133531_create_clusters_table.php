@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('data_clusters', function (Blueprint $table) {
+        Schema::create('clusters', function (Blueprint $table) {
             $table->id();
-            $table->string('kecamatan');
+            $table->unsignedBigInteger('data_industri2016_id');
             $table->double('c1')->nullable();
             $table->double('c2')->nullable();
             $table->double('c3')->nullable();
@@ -44,6 +44,9 @@ return new class extends Migration
             $table->double('cluster')->nullable();
             $table->double('index')->nullable();
             $table->timestamps();
+
+            $table->foreign('data_industri2016_id')->references('id')->on('data_industri2016s');
+
         });
     }
 
@@ -54,6 +57,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('data_clusters');
+        Schema::dropIfExists('clusters');
     }
 };
