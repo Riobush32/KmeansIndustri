@@ -1,7 +1,7 @@
 <div class="card w-[98%] bg-base-100 shadow-xl mx-auto mt-5 border-2 p-5 my-5">
     <form action="" class="form-control">
         <div class="input-group">
-            <input type="number" placeholder="Masukkan Nilai K..." class="input input-bordered" value="{{ request('kvalue') }}" name="kvalue"/>
+            <input type="number" min="1" max="25"placeholder="Masukkan Nilai K..." class="input input-bordered" value="{{ request('kvalue') }}" name="kvalue"/>
             <button class="btn" type="submit">
                 Jumlah K
             </button>
@@ -90,6 +90,31 @@
             @endforeach
 
             
+        </tbody>
+    </table>
+</div>
+
+<div class="card w-[98%] bg-base-100 shadow-xl mx-auto mt-5 border-2 p-5 my-5">
+    <h1 class="font-bold">Rata-Rata</h1>
+    <table class="table w-full">
+        <thead>
+            <tr>
+                <?php $no = 1; ?>
+                @while ($no <= $kvalue) 
+                    <th>C{{ $no }}</th>
+                <?php $no++; ?>
+                @endwhile
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @foreach ($avg as $item)
+                    @for ($i = 1; $i <= $kvalue; $i++) 
+                        <?php $c='avg_c'.$i; ?>
+                        <th>{{ $item->$c }}</th>
+                    @endfor
+                @endforeach
+            </tr>
         </tbody>
     </table>
 </div>

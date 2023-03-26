@@ -70,6 +70,6 @@
         </div>
     </div>
     
-        @include('proses')
+        @include('proses.proses')
     @endif
 </html>
