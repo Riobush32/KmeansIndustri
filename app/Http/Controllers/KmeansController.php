@@ -37,25 +37,8 @@ class KmeansController extends Controller
             // proses 
             $value = Kvalue::all();
 
-            $this->proses($data, $value);
+            $this->kMeans($data, $value, $request->kvalue);
 
-            // masukkan nilai rata2 kedalam table data_calusters
-            $avg = array();
-
-            
-            $loop = 1;
-            for ($l=0; $l < $request->kvalue; $l++) { 
-                for ($i=0; $i < 6 ; $i++) { 
-                    $c = 't201'.$i+1;
-                    $avg[$i] = DB::table('data_industri2016s')
-                                ->join('clusters', 'data_industri2016s.id', '=', 'clusters.data_industri2016_id')
-                                ->select('data_industri2016s.*')
-                                ->where('clusters.index', '=', $l+1)
-                                ->avg($c);
-                }
-                
-                $this->createKvalue2($avg, $loop);
-            }
 
         }
 
@@ -68,6 +51,26 @@ class KmeansController extends Controller
             'cluster' => Cluster::all(),
             ]);
         
+    }
+
+    // main function 
+    function kMeans ($data, $value, $kv)
+    {
+        $this->proses($data, $value);
+
+                // masukkan nilai rata2 kedalam table data_calusters
+                $avg = array();
+
+                
+                $loop = 1;
+                for ($l=0; $l < $kv; $l++) { 
+                    for ($i=0; $i < 6 ; $i++) { 
+                        $c = 't201'.$i+1;
+                        $avg[$i] = $this->getAverageData($l, $c);
+                    }
+                    
+                    $this->createKvalue2($avg, $loop);
+                }
     }
 
     //Function Proses perhitungan Euclidean Distance
@@ -109,6 +112,18 @@ class KmeansController extends Controller
                 $this->createCluster($k_nilai, $id, $k_min, $index);
 
             }
+    }
+
+    
+
+    // mencari rata-rata  
+    function getAverageData($l, $c) {
+        $avg = DB::table('data_industri2016s')
+                    ->join('clusters', 'data_industri2016s.id', '=', 'clusters.data_industri2016_id')
+                    ->where('clusters.index', '=', $l+1)
+                    ->avg($c);
+
+        return $avg;
     }
 
     //Function Memasukkan data Kvalue
@@ -177,6 +192,8 @@ class KmeansController extends Controller
 
         ]);
     }
+
+    
 
     
 
