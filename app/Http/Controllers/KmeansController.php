@@ -47,9 +47,11 @@ class KmeansController extends Controller
             for ($l=0; $l < $request->kvalue; $l++) { 
                 for ($i=0; $i < 6 ; $i++) { 
                     $c = 't201'.$i+1;
-                    $avg[$i] = DataIndustri2016::with(['clusters' => function ($query) use ($l) {
-                                $query->where('index', '=', $l+1);
-                            }])->avg($c);
+                    $avg[$i] = DB::table('data_industri2016s')
+                                ->join('clusters', 'data_industri2016s.id', '=', 'clusters.data_industri2016_id')
+                                ->select('data_industri2016s.*')
+                                ->where('clusters.index', '=', $l+1)
+                                ->avg($c);
                 }
                 
                 $this->createKvalue2($avg, $loop);
@@ -57,7 +59,7 @@ class KmeansController extends Controller
 
         }
 
-        $kv = Kvalue::take($request->kvalue)->get();
+        $kv = Kvalue::all();
 
         return view('page.Kmeans',[
             'data' => DataIndustri2016::all(),

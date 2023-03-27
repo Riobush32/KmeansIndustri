@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('kvalues', function (Blueprint $table) {
             $table->id();
             $table->string('kecamatan');
-            $table->integer('t2011');
-            $table->integer('t2012');
-            $table->integer('t2013');
-            $table->integer('t2014');
-            $table->integer('t2015');
-            $table->integer('t2016');
+            $table->double('t2011');
+            $table->double('t2012');
+            $table->double('t2013');
+            $table->double('t2014');
+            $table->double('t2015');
+            $table->double('t2016');
             $table->timestamps();
         });
     }
