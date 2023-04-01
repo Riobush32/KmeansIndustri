@@ -12,8 +12,7 @@
 
 @if ($kvalue != 0)
     
-
-
+dara
 <div class="card w-[98%] bg-base-100 shadow-xl mx-auto mt-5 border-2 p-5 my-5">
     <h1 class="font-bold">Centoroid Awal</h1>
     <div class="overflow-x-auto">
@@ -75,10 +74,11 @@
         <tbody>
             <?php 
                 $no = 1;
+                $clusters = $cluster->take($count);
             ?>
         
 
-            @foreach ($cluster as $item)
+            @foreach ($clusters as $item)
             <tr>
                 <th>{{ $no }}</th>
                 <th>{{ $item->data_industri2016s->kecamatan }}</th>
@@ -97,6 +97,7 @@
         </tbody>
     </table>
 </div>
+ini
 
 <div class="card w-[98%] bg-base-100 shadow-xl mx-auto mt-5 border-2 p-5 my-5">
     <?php 
@@ -131,6 +132,50 @@
             </tr>
             <?php $no++; ?>
             @endforeach
+            
+        </tbody>
+    </table>
+</div>
+
+<div class="card w-[98%] bg-base-100 shadow-xl mx-auto mt-5 border-2 p-5 my-5">
+
+    <table class="table w-full">
+        <!-- head -->
+        <thead>
+            <tr>
+                <th></th>
+                <th>Kecamatan</th>
+                <?php $no = 1; ?>
+                @while ($no <= $kvalue) <th>C{{ $no }}</th>
+                    <?php $no++; ?>
+                    @endwhile
+                    <th>Jarak Terdekat</th>
+                    <th>Cluster</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                $no = 1;
+                $clusters = $cluster->skip($count)->take($count);
+            ?>
+
+
+            @foreach ($clusters as $item)
+            <tr>
+                <th>{{ $no }}</th>
+                <th>{{ $item->data_industri2016s->kecamatan }}</th>
+                @for ($i = 1; $i <= $kvalue; $i++) <?php $c='c' .$i; ?>
+                    <th>{{ $item->$c }}</th>
+                    @endfor
+                    <th>{{ $item->cluster }}</th>
+                    <th>{{ $item->index }}</th>
+
+                    <?php $no++; ?>
+            </tr>
+            @endforeach
+
+
         </tbody>
     </table>
 </div>

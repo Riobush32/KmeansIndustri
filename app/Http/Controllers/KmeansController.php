@@ -35,26 +35,58 @@ class KmeansController extends Controller
             $this->createKvalue($random, $request->kvalue);
 
             // proses 
-            $value = Kvalue::all();
 
-            $this->kMeans($data, $value, $request->kvalue);
+            $this->kMeans($data, Kvalue::all(), $request->kvalue, 1);
+            $count = DataIndustri2016::count();
 
+            $kv = Kvalue::all();
+            $centoroid = $kv->skip($request->kvalue)->take($request->kvalue);
+            $this->kMeans($data, $centoroid, $request->kvalue, 2);
+
+            // check 
+            $start = 0;
+            $loop = 1;
+                
+                $chek = array();
+                for ($i=$start; $i < $count; $i++) { 
+                    $dataCluster = Cluster::find($i+1);
+                    $dataClusterIterasi = Cluster::find($i+($count*$loop)+1);
+                    if ($dataCluster->index == $dataClusterIterasi->index) {
+                        $chek[$i] = 1;
+                    }
+                    else{
+                        $chek[$i] = 0;
+                    }
+                
+                }
+
+                if (in_array(0, $chek)) {
+                    $centoroid = Kvalue::all()->skip($request->kvalue*($loop+1))->take($request->kvalue);
+                    $this->kMeans($data, $centoroid, $request->kvalue, $loop+2);
+                }
+            $hasil_check = 0;
+            if (in_array(0, $chek)) {
+                $hasil_check = 0;
+            } else {
+                $hasil_check = 1;
+            }
+            
 
         }
-
-        $kv = Kvalue::all();
 
         return view('page.Kmeans',[
             'data' => DataIndustri2016::all(),
             'kvalue' => $request->kvalue,
-            'dataKv' => $kv,
+            'dataKv' => Kvalue::all(),
             'cluster' => Cluster::all(),
+            'count' => $count,
+            'hasilCeck' => $hasil_check,
             ]);
         
     }
 
     // main function 
-    function kMeans ($data, $value, $kv)
+    function kMeans ($data, $value, $kv, $j)
     {
         $this->proses($data, $value);
 
@@ -62,7 +94,7 @@ class KmeansController extends Controller
                 $avg = array();
 
                 
-                $loop = 1;
+                $loop = $j;
                 for ($l=0; $l < $kv; $l++) { 
                     for ($i=0; $i < 6 ; $i++) { 
                         $c = 't201'.$i+1;
@@ -106,7 +138,7 @@ class KmeansController extends Controller
                 }
 
 
-                // Memasukkan data kedalam table data_clusters 
+                // Memasukkan data kedalam table cluster
 
                 $id = $item->id;
                 $this->createCluster($k_nilai, $id, $k_min, $index);
@@ -142,10 +174,10 @@ class KmeansController extends Controller
             }
     }
 
-    public function createKvalue2($data, $lp)
+    public function createKvalue2($data, $it)
     {
         Kvalue::create([
-                    'kecamatan' => $lp,
+                    'kecamatan' => $it,
                     't2011'     => $data[0],
                     't2012'     => $data[1],
                     't2013'     => $data[2],
