@@ -12,7 +12,6 @@
 
 @if ($kvalue != 0)
     
-dara
 <div class="card w-[98%] bg-base-100 shadow-xl mx-auto mt-5 border-2 p-5 my-5">
     <h1 class="font-bold">Centoroid Awal</h1>
     <div class="overflow-x-auto">
@@ -97,15 +96,21 @@ dara
         </tbody>
     </table>
 </div>
-ini
+
+<?php 
+    $d=1; 
+    $count_cluster = count($cluster);
+    $while_loop = $count_cluster / $count;
+?>
+@while ($d < $while_loop)
 
 <div class="card w-[98%] bg-base-100 shadow-xl mx-auto mt-5 border-2 p-5 my-5">
     <?php 
         $no = 1; 
-        $kv = $dataKv->skip($kvalue)->take($kvalue);
+        $kv = $dataKv->skip($kvalue*$d)->take($kvalue);
 
     ?>
-    <h1 class="font-bold">Iterasi {{ $kv[$kvalue]->kecamatan }}</h1>
+    <h1 class="font-bold">Iterasi {{ $kv[$kvalue*$d]->kecamatan }}</h1>
     <table class="table w-full">
         <thead>
             <tr>
@@ -135,7 +140,7 @@ ini
             
         </tbody>
     </table>
-</div>
+</div> 
 
 <div class="card w-[98%] bg-base-100 shadow-xl mx-auto mt-5 border-2 p-5 my-5">
 
@@ -157,7 +162,7 @@ ini
         <tbody>
             <?php 
                 $no = 1;
-                $clusters = $cluster->skip($count)->take($count);
+                $clusters = $cluster->skip($count*$d)->take($count);
             ?>
 
 
@@ -179,5 +184,45 @@ ini
         </tbody>
     </table>
 </div>
+<?php $d++; ?>
+@endwhile
 
+<div class="card w-[98%] bg-base-100 shadow-xl mx-auto mt-5 border-2 p-5 my-5">
+    <h1 class="font-bold">Hasil Cluster</h1>
+    <table class="table w-full">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Kecamatan</th>
+                <?php $no = 1; ?>
+                <th>Cluster</th>
+        
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                $no = 1;
+                $clusters = $cluster->skip($count*($while_loop-1))->take($count);
+                $p = 0;
+            ?>
+        
+            @while ($p < $kvalue)
+                <?php $cl = $clusters->where('index', $p+1) ?>
+
+                @foreach ($cl as $item)
+                <tr>
+                    <th>{{ $no }}</th>
+                    <th>{{ $item->data_industri2016s->kecamatan }}</th>
+                    <th>{{ $item->index }}</th>
+            
+                <?php $no++; ?>
+                </tr>
+                
+                @endforeach
+            <?php $p++; ?>
+            @endwhile
+        
+        </tbody>
+    </table>
+</div>
 @endif

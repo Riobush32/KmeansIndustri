@@ -21,6 +21,7 @@ class KmeansController extends Controller
     public function index(Request $request)
     {
         $random = DataIndustri2016::all();
+        $count = 0;
         if($request->kvalue){         
             $data = DataIndustri2016::all();   
             $random = $data->random($request->kvalue);
@@ -46,31 +47,33 @@ class KmeansController extends Controller
             // check 
             $start = 0;
             $loop = 1;
+            do{
                 
-                $chek = array();
-                for ($i=$start; $i < $count; $i++) { 
-                    $dataCluster = Cluster::find($i+1);
-                    $dataClusterIterasi = Cluster::find($i+($count*$loop)+1);
-                    if ($dataCluster->index == $dataClusterIterasi->index) {
-                        $chek[$i] = 1;
+                    $chek = array();
+                    for ($i=$start; $i < $count; $i++) { 
+                        $dataCluster = Cluster::find($i+1);
+                        $dataClusterIterasi = Cluster::find($i+($count)+1);
+                        if ($dataCluster->index == $dataClusterIterasi->index) {
+                            $chek[$i] = 1;
+                        }
+                        else{
+                            $chek[$i] = 0;
+                        }
+                    
                     }
-                    else{
-                        $chek[$i] = 0;
-                    }
-                
-                }
 
-                if (in_array(0, $chek)) {
-                    $centoroid = Kvalue::all()->skip($request->kvalue*($loop+1))->take($request->kvalue);
-                    $this->kMeans($data, $centoroid, $request->kvalue, $loop+2);
-                }
-            $hasil_check = 0;
-            if (in_array(0, $chek)) {
-                $hasil_check = 0;
-            } else {
-                $hasil_check = 1;
-            }
+                    if (in_array(0, $chek)) {
+                        $centoroid = Kvalue::all()->skip($request->kvalue*($loop+1))->take($request->kvalue);
+                        $this->kMeans($data, $centoroid, $request->kvalue, $loop+2);
+                    }
+                    
+                    $start = $count*$loop;
+                    $loop++;
+                
+
+            }while(in_array(0, $chek));
             
+                
 
         }
 
@@ -80,7 +83,6 @@ class KmeansController extends Controller
             'dataKv' => Kvalue::all(),
             'cluster' => Cluster::all(),
             'count' => $count,
-            'hasilCeck' => $hasil_check,
             ]);
         
     }
